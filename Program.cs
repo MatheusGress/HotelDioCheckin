@@ -4,13 +4,24 @@ using DesafioProjetoHospedagem.Models;
 Console.OutputEncoding = Encoding.UTF8;
 
 // Cria os modelos de hóspedes e cadastra na lista de hóspedes
+Pessoa quantidade = new Pessoa();
+
+Console.WriteLine("Quantas pessoas serão hospedadas? ");
+quantidade.QuantidadeCadastro = int.Parse(Console.ReadLine());
+
 List<Pessoa> hospedes = new List<Pessoa>();
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
+for (int i = 0; i < quantidade.QuantidadeCadastro; i++)
+{
+    Pessoa p = new Pessoa();
 
-hospedes.Add(p1);
-hospedes.Add(p2);
+    Console.WriteLine("Digite seu primeiro nome: ");
+    p.Nome = Console.ReadLine();
+
+    Console.WriteLine("Digite seu sobrenome: ");
+    p.Sobrenome = Console.ReadLine();
+
+}
 
 // Cria a suíte
 Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
