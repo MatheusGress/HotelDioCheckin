@@ -1,61 +1,77 @@
+using System;
+using System.Collections.Generic;
+
 namespace DesafioProjetoHospedagem.Models
 {
     public class Reserva
     {
-        public List<Pessoa> Hospedes { get; set; }
-        public Suite Suite { get; set; }
+        public int EscolhaQuarto { get; }
+        public List<Pessoa> Hospedes { get; private set; }
+        public Suite QuartoSuite { get; private set; }
+        public Comum QuartoComum { get; private set; }
         public int DiasReservados { get; set; }
 
-        public Reserva() { }
-
-        public Reserva(int diasReservados)
+        public Reserva(int diasReservados, int escolhaQuarto)
         {
             DiasReservados = diasReservados;
+            EscolhaQuarto = escolhaQuarto;
         }
 
+        // Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
         public void CadastrarHospedes(List<Pessoa> hospedes)
         {
-            // TODO: Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
-            // *IMPLEMENTE AQUI*
-            if (hospedes)
+            if (EscolhaQuarto == 1 && QuartoComum != null && hospedes.Count <= QuartoComum.CapacidadeComum)
+            {
+                Hospedes = hospedes;
+            }
+            else if (EscolhaQuarto == 2 && QuartoSuite != null && hospedes.Count <= QuartoSuite.CapacidadeSuite)
             {
                 Hospedes = hospedes;
             }
             else
             {
-                // TODO: Retornar uma exception caso a capacidade seja menor que o número de hóspedes recebido
-                // *IMPLEMENTE AQUI*
-                Console.WriteLine("capacidade excedida");
+                Console.WriteLine("Capacidade excedida ou quarto não selecionado.");
             }
+        }
+
+        public void CadastrarComum(Comum comum)
+        {
+            QuartoComum = comum;
         }
 
         public void CadastrarSuite(Suite suite)
         {
-            Suite = suite;
+            QuartoSuite = suite;
         }
 
         public int ObterQuantidadeHospedes()
         {
-            // TODO: Retorna a quantidade de hóspedes (propriedade Hospedes)
-            // *IMPLEMENTE AQUI*
-            return 0;
+            return Hospedes?.Count ?? 0;
         }
 
         public decimal CalcularValorDiaria()
         {
-            // TODO: Retorna o valor da diária
-            // Cálculo: DiasReservados X Suite.ValorDiaria
-            // *IMPLEMENTE AQUI*
-            decimal valor = 0;
+            decimal valorDiaria = 0;
 
-            // Regra: Caso os dias reservados forem maior ou igual a 10, conceder um desconto de 10%
-            // *IMPLEMENTE AQUI*
-            if (true)
+            if (EscolhaQuarto == 1 && QuartoComum != null)
             {
-                valor = 0;
+                valorDiaria = DiasReservados * QuartoComum.ValorDiariaComum;
+            }
+            else if (EscolhaQuarto == 2 && QuartoSuite != null)
+            {
+                valorDiaria = DiasReservados * QuartoSuite.ValorDiariaSuite;
+            }
+            else
+            {
+                Console.WriteLine("Quarto não selecionado.");
             }
 
-            return valor;
+            if (DiasReservados >= 10)
+            {
+                valorDiaria *= 0.9m; 
+            }
+
+            return valorDiaria;
         }
     }
 }
