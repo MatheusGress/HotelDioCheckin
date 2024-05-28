@@ -7,7 +7,17 @@ Console.OutputEncoding = Encoding.UTF8;
 
 // Cria os modelos de hóspedes e cadastra na lista de hóspedes
 Console.WriteLine("Quantas pessoas serão hospedadas? ");
-int quantidadeCadastro = int.Parse(Console.ReadLine());
+int quantidadeCadastro;
+
+try
+{
+    quantidadeCadastro = int.Parse(Console.ReadLine());
+}
+catch (FormatException)
+{
+    Console.WriteLine("\nEntrada inválida. Por favor, insira um valor numérico. Encerrando programa.");
+    return;
+}
 
 List<Pessoa> hospedes = new List<Pessoa>();
 
@@ -21,51 +31,89 @@ for (int i = 0; i < quantidadeCadastro; i++)
     Console.WriteLine($"Digite o sobrenome da {i + 1}ª pessoa:");
     p.Sobrenome = Console.ReadLine();
 
-    hospedes.Add(p); // Adiciona o hóspede à lista
+    hospedes.Add(p);
 }
 
 Console.WriteLine("\nEscolha o tipo do quarto:");
 Console.WriteLine("1 - Comum ");
 Console.WriteLine("2 - Suíte ");
 
-int escolhaQuarto = int.Parse(Console.ReadLine()); // Captura a escolha do usuário
+int escolhaQuarto;
+
+try
+{
+    escolhaQuarto = int.Parse(Console.ReadLine());
+}
+catch (FormatException)
+{
+    Console.WriteLine("\nEntrada inválida. Por favor, insira um valor numérico. Encerrando programa.");
+    return;
+}
 
 // Cria uma nova reserva com base na escolha do usuário
 Reserva escolha = new Reserva(diasReservados: 0, escolhaQuarto);
+Comum comum = new Comum();
+Suite suite = new Suite();
 
 if (escolhaQuarto == 1)
 {
-    // Cria o quarto comum
-    Comum comum = new Comum(tipoComum: "Padrão", capacidadeComum: 1, valorDiariaComum: 99);
-
-    // Captura a quantidade de dias da reserva
-    Console.WriteLine("\nQuantos dias serão reservados?");
-    escolha.DiasReservados = int.Parse(Console.ReadLine());
-
     escolha.CadastrarComum(comum);
-    escolha.CadastrarHospedes(hospedes);
+    if (hospedes.Count <= comum.CapacidadeComum)
+    {
+        escolha.CadastrarHospedes(hospedes);
+
+        Console.WriteLine("\nQuantos dias serão reservados?");
+        try
+        {
+            escolha.DiasReservados = int.Parse(Console.ReadLine());
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("\nEntrada inválida. Por favor, insira um valor numérico. Encerrando programa.");
+            return;
+        }
+
+        Console.WriteLine("\nDetalhes da Reserva:");
+        Console.WriteLine($"Tipo do Quarto: {escolha.QuartoComum.TipoComum}");
+        Console.WriteLine($"Quantidade de Hóspedes: {escolha.ObterQuantidadeHospedes()}");
+        Console.WriteLine($"Valor da Diária: {escolha.QuartoComum.ValorDiariaComum:C2}");
+        Console.WriteLine($"Total da Reserva: {escolha.CalcularValorDiaria():C2}");
+    }
+    else
+    {
+        Console.WriteLine("\nCapacidade do quarto comum excedida. Encerrando programa.");
+    }
 }
 else if (escolhaQuarto == 2)
 {
-    // Cria a suíte
-    Suite suite = new Suite(tipoSuite: "Premium", capacidadeSuite: 2, valorDiariaSuite: 189);
-
-    // Captura a quantidade de dias da reserva
-    Console.WriteLine("\nQuantos dias serão reservados?");
-    escolha.DiasReservados = int.Parse(Console.ReadLine());
-
     escolha.CadastrarSuite(suite);
-    escolha.CadastrarHospedes(hospedes);
+    if (hospedes.Count <= suite.CapacidadeSuite)
+    {
+        escolha.CadastrarHospedes(hospedes);
+
+        Console.WriteLine("\nQuantos dias serão reservados?");
+        try
+        {
+            escolha.DiasReservados = int.Parse(Console.ReadLine());
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("\nEntrada inválida. Por favor, insira um valor numérico. Encerrando programa.");
+            return;
+        }
+
+        Console.WriteLine("\nDetalhes da Reserva:");
+        Console.WriteLine($"Tipo do Quarto: {escolha.QuartoSuite.TipoSuite}");
+        Console.WriteLine($"Quantidade de Hóspedes: {escolha.ObterQuantidadeHospedes()}");
+        Console.WriteLine($"Valor da Diária: {escolha.QuartoSuite.ValorDiariaSuite:C2}");
+        Console.WriteLine($"Total da Reserva: {escolha.CalcularValorDiaria():C2}");
+    }
+    else
+    {
+        Console.WriteLine("\nCapacidade da suíte excedida. Encerrando programa.");
+    }
 }
 else
 {
-    Console.WriteLine("Opção inválida. Encerrando programa.");
-    return; // Encerra o programa se a escolha do quarto for inválida
+    Console.WriteLine("\nOpção inválida. Encerrando programa.");
 }
-
-// Exibe as informações da reserva
-Console.WriteLine("\nDetalhes da Reserva:");
-Console.WriteLine($"Tipo do Quarto: {(escolhaQuarto == 1 ? escolha.QuartoComum.TipoComum : escolha.QuartoSuite.TipoSuite)}");
-Console.WriteLine($"Quantidade de Hóspedes: {escolha.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor da Diária: {escolha.CalcularValorDiaria() / 2 :C2}");
-Console.WriteLine($"Total da Reserva: {escolha.CalcularValorDiaria():C2}");
