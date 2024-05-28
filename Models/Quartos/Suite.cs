@@ -2,7 +2,12 @@ namespace DesafioProjetoHospedagem.Models
 {
     public class Suite
     {
-        public Suite() { }
+        public Suite() 
+        {
+            TipoSuite = "Premium";
+            CapacidadeSuite = 6;
+            ValorDiariaSuite = 389;
+        }
 
         public Suite(string tipoSuite, int capacidadeSuite, decimal valorDiariaSuite)
         {
