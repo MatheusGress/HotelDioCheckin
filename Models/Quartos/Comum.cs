@@ -2,7 +2,12 @@ namespace DesafioProjetoHospedagem.Models
 {
     public class Comum
     {
-        public Comum() { }
+        public Comum() 
+        {
+            TipoComum = "Padrão";
+            CapacidadeComum = 4;
+            ValorDiariaComum = 149;
+        }
 
         public Comum(string tipoComum, int capacidadeComum, decimal valorDiariaComum)
         {
@@ -15,5 +20,4 @@ namespace DesafioProjetoHospedagem.Models
         public int CapacidadeComum { get; set; }
         public decimal ValorDiariaComum { get; set; }
     }
-
 }
