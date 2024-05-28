@@ -10,14 +10,15 @@ namespace DesafioProjetoHospedagem.Models
         public Suite QuartoSuite { get; private set; }
         public Comum QuartoComum { get; private set; }
         public int DiasReservados { get; set; }
+        public bool CapacidadeExcedida { get; private set; }
 
         public Reserva(int diasReservados, int escolhaQuarto)
         {
             DiasReservados = diasReservados;
             EscolhaQuarto = escolhaQuarto;
+            CapacidadeExcedida = true;
         }
 
-        // Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
         public void CadastrarHospedes(List<Pessoa> hospedes)
         {
             if (EscolhaQuarto == 1 && QuartoComum != null && hospedes.Count <= QuartoComum.CapacidadeComum)
@@ -30,6 +31,7 @@ namespace DesafioProjetoHospedagem.Models
             }
             else
             {
+                CapacidadeExcedida = false;
                 Console.WriteLine("Capacidade excedida ou quarto não selecionado.");
             }
         }
