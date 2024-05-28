@@ -1,25 +1,26 @@
-namespace DesafioProjetoHospedagem.Models;
-
-public class Pessoa
+namespace DesafioProjetoHospedagem.Models
 {
-    public Pessoa() { }
-    public Pessoa(int quantidadeCadastro)
+    public class Pessoa
     {
-        QuantidadeCadastro = quantidadeCadastro;
-    }
-    public Pessoa(string nome)
-    {
-        Nome = nome;
-    }
+        public Pessoa() { }
+        public Pessoa(int quantidadeCadastro)
+        {
+            QuantidadeCadastro = quantidadeCadastro;
+        }
+        public Pessoa(string nome)
+        {
+            Nome = nome;
+        }
 
-    public Pessoa(string nome, string sobrenome)
-    {
-        Nome = nome;
-        Sobrenome = sobrenome;
-    }
+        public Pessoa(string nome, string sobrenome)
+        {
+            Nome = nome;
+            Sobrenome = sobrenome;
+        }
 
-    public string Nome { get; set; }
-    public string Sobrenome { get; set; }
-    public string NomeCompleto => $"{Nome} {Sobrenome}".ToUpper();
-    public int QuantidadeCadastro { get; set; }
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+        public string NomeCompleto => $"{Nome} {Sobrenome}".ToUpper();
+        public int QuantidadeCadastro { get; set; }
+    }
 }
